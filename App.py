@@ -1,19 +1,23 @@
-import requests
+import sudoku, nonagram
 
 def run():
-    try:
-        puzzle = getPuzzle()
-        print(puzzle)
-    except Exception as e:
-        print(f'error occurred: {e}')
+    while True:
+        print('\nWelcome to Gridmaster.\n\n1. Solve sudoku\n2. Solve nonagram\n3. Close application\n')
+        try:
+            option = int(input('Please enter the number for your desired action: '))
+        except ValueError as e:
+            raise ValueError(f'Invalid input: {e}')
+        
+        if option == 1:
+            sudoku.solve()     
+        elif option == 2:
+            nonagram.solve()
+        elif option == 3:
+            print('\nClosing down...')
+            quit()
+        else:
+            raise ValueError('Invalid option. Please enter 1, 2 or 3.')
 
-def getPuzzle():
-    response = requests.get('https://sudoku-api.vercel.app/api/dosuku')
-
-    if(response.status_code != 200): 
-        raise requests.HTTPError(f'request failed with status code: {response.status_code}')
-    
-    return response.json()['newboard']['grids'][0]['value']
 
 
 if __name__ == '__main__':
